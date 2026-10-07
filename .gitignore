@@ -38,3 +38,5 @@ systemd/netmonitor-notebook.service
 .DS_Store
 Thumbs.db
 bin/
+
+config.local.json

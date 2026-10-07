@@ -220,6 +220,21 @@ sudo systemctl restart netmonitor.service
 
 Se atingir o limite de reinícios, corrija o erro mostrado no journal e execute `sudo systemctl reset-failed netmonitor.service` antes de iniciar novamente.
 
+### Serviço existente usando um perfil versionado
+
+Se o serviço ainda aponta para `config.notebook.json`, crie a configuração local e confira os valores específicos da máquina. `cp -n` preserva uma cópia local já existente:
+
+```bash
+cp -n config.notebook.json config.local.json
+nano config.local.json
+sudo sed -i 's@/config.notebook.json@/config.local.json@g' /etc/systemd/system/netmonitor.service
+sudo systemctl daemon-reload
+sudo systemctl restart netmonitor.service
+systemctl cat netmonitor.service
+```
+
+O comando de substituição é para Linux e para a unidade instalada pelo procedimento acima. Confirme que `ExecStart` usa `config.local.json`. A partir daí, ajuste interface, gateway, plano e IP esperado somente nesse arquivo; mantenha os perfis versionados como exemplos. O `.gitignore` já exclui `config.local.json`; arquivos previamente rastreados pelo Git continuam rastreados mesmo se forem adicionados ao ignore.
+
 ## Dados, backups e atualizações
 
 O SQLite usa WAL, `busy_timeout` limitado e `synchronous=NORMAL`. Há um único escritor. Retenção remove dados em lotes e preserva incidentes abertos. Corte de energia pode perder commits recentes; não há promessa de perda zero. Disco cheio, fila cheia ou erro de escrita são reportados, com saída controlada.
