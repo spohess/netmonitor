@@ -39,7 +39,7 @@
       }
     ]
   },
-  "interface": "eth0",
+  "interface": "enp62s0",
   "database_path": "data/monitor.db",
   "retention_days": 30,
   "incident_retention_days": 365,
