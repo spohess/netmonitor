@@ -1,0 +1,66 @@
+{
+  "targets": [
+    {
+      "id": "gateway",
+      "name": "Roteador",
+      "address": "10.10.10.254",
+      "role": "gateway"
+    },
+    {
+      "id": "cloudflare",
+      "name": "Cloudflare",
+      "address": "1.1.1.1",
+      "role": "wan"
+    },
+    {
+      "id": "google",
+      "name": "Google",
+      "address": "8.8.8.8",
+      "role": "wan"
+    }
+  ],
+  "icmp_interval_seconds": 2,
+  "icmp_timeout_ms": 700,
+  "process_timeout_seconds": 1.8,
+  "fping_binary": "fping",
+  "dns": {
+    "interval_seconds": 30,
+    "timeout_seconds": 3,
+    "name": "example.com",
+    "record_type": "A",
+    "resolvers": [
+      {
+        "id": "system",
+        "address": "system"
+      },
+      {
+        "id": "cloudflare",
+        "address": "1.1.1.1"
+      }
+    ]
+  },
+  "interface": "eth0",
+  "database_path": "data/monitor.db",
+  "retention_days": 30,
+  "incident_retention_days": 365,
+  "maintenance_interval_seconds": 3600,
+  "retention_batch_size": 2000,
+  "failure_threshold": 3,
+  "recovery_threshold": 2,
+  "flush_interval_seconds": 1,
+  "max_queue_size": 128,
+  "log_level": "INFO",
+  "speedtest": {
+    "enabled": true,
+    "binary": "bin/speedtest",
+    "interval_seconds": 21600,
+    "initial_delay_seconds": 300,
+    "timeout_seconds": 180,
+    "cooldown_seconds": 10,
+    "server_id": null,
+    "plan_download_mbps": 1000,
+    "plan_upload_mbps": 1000,
+    "ip_mode": "static",
+    "expected_public_ip": null
+  }
+}

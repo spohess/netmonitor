@@ -1,0 +1,20 @@
+[Unit]
+Description=Monitor de estabilidade de rede
+After=network.target
+StartLimitIntervalSec=120
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=spohess
+WorkingDirectory=/home/spohess/netmonitor
+ExecStart=/home/spohess/netmonitor/.venv/bin/python /home/spohess/netmonitor/collector.py --config /home/spohess/netmonitor/config.json
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=20
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

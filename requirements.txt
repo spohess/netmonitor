@@ -1,0 +1,2 @@
+dnspython==2.7.0; python_version < '3.10'
+dnspython==2.8.0; python_version >= '3.10'
