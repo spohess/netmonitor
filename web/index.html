@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6854d9">
+  <title>Netmonitor · Visão da rede</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#overview" aria-label="Netmonitor, início"><img src="/favicon.svg" alt="" width="38" height="38"><span>netmonitor<span class="brand-caption">OBSERVABILIDADE DA REDE</span></span></a>
+    <div class="nav-label">MONITORAMENTO</div>
+    <nav aria-label="Seções do dashboard">
+      <a href="#overview" class="active"><span aria-hidden="true">◫</span> Visão geral</a>
+      <a href="#stability"><span aria-hidden="true">⌁</span> Estabilidade</a>
+      <a href="#bandwidth"><span aria-hidden="true">↕</span> Banda</a>
+      <a href="#dns"><span aria-hidden="true">◎</span> Resolução DNS</a>
+      <a href="#events"><span aria-hidden="true">≡</span> Eventos</a>
+    </nav>
+    <div class="sidebar-bottom"><span class="local-dot"></span> Dashboard local<p>Histórico da sua conexão,<br>em um só lugar.</p><span class="small">SQLite · leitura de dados</span></div>
+  </aside>
+  <main>
+    <header class="topbar"><span>Monitoramento <span class="slash">/</span> <strong>Visão da rede</strong></span><span class="local-label">LOCAL <span aria-hidden="true">↗</span></span></header>
+    <section id="overview" class="section">
+      <div class="page-heading"><div><div class="eyebrow">SUA CONEXÃO, EM PERSPECTIVA</div><h1>Visão geral da rede</h1><p>Estabilidade, desempenho e os eventos da sua conexão.</p></div><div class="period-control" role="group" aria-label="Período do histórico"><button data-window="1h" aria-pressed="false">1 hora</button><button data-window="24h" class="selected" aria-pressed="true">24 horas</button><button data-window="7d" aria-pressed="false">7 dias</button></div></div>
+      <div class="update-row"><span id="history-time">Carregando histórico…</span><button id="refresh" class="text-button"><span aria-hidden="true">↻</span> Atualizar</button></div>
+      <div id="error" class="notice error" role="alert" hidden></div>
+      <div class="health-banner" id="health-banner"><div class="health-icon" id="health-icon" aria-hidden="true">·</div><div class="health-copy"><div class="eyebrow">ESTADO ATUAL · ICMP</div><h2 id="health-title">Aguardando medições</h2><p id="health-description">Lendo as últimas observações do coletor.</p></div><div class="health-meta"><span id="sample-age">Sem atualização</span><span id="link-state">Interface —</span></div></div>
+      <div id="target-cards" class="target-grid" aria-label="Métricas por alvo"><div class="panel empty-state">Carregando métricas do período…</div></div>
+    </section>
+    <section id="stability" class="section">
+      <div class="section-heading"><div><h2>Estabilidade da conexão</h2><p>Respostas ICMP por alvo · todos os probes observados</p></div><div class="chart-select"><label for="rtt-mode">Latência</label><select id="rtt-mode"><option value="rtt_mean_ms">Média</option><option value="rtt_max_ms">Máxima</option></select></div></div>
+      <div class="charts-grid"><article class="panel chart-panel"><div class="panel-heading"><h3>Latência ao longo do tempo</h3><span class="unit">ms</span></div><div id="rtt-legend" class="legend"></div><div id="rtt-chart" class="chart-placeholder">Carregando gráfico…</div><div id="rtt-selection" class="chart-inspector"></div></article><article class="panel chart-panel"><div class="panel-heading"><h3>Perda de pacotes</h3><span class="unit">%</span></div><div id="loss-legend" class="legend"></div><div id="loss-chart" class="chart-placeholder">Carregando gráfico…</div><div id="loss-selection" class="chart-inspector"></div></article></div>
+      <p class="footnote">As linhas usam intervalos agregados e são interrompidas quando não há medição válida. A faixa âmbar indica cobertura incompleta. Toque no gráfico ou use o controle abaixo para consultar um intervalo.</p>
+      <details class="panel baseline"><summary>Comparar métricas sem carga de speedtest</summary><p>A comparação abaixo exclui probes marcados durante testes de banda e cooldown. Os gráficos acima apresentam o total.</p><div id="baseline-content"></div></details>
+    </section>
+    <section id="bandwidth" class="section">
+      <div class="section-heading"><div><h2>Banda medida</h2><p>Medições pontuais de download e upload</p></div><span id="speedtest-setting" class="tag neutral">Speedtest</span></div>
+      <div class="bandwidth-grid"><article class="panel speed-summary"><div class="panel-heading"><h3>Último teste bem-sucedido</h3><span class="tag neutral" id="speed-age">Sem dados</span></div><div id="speed-summary"><div class="empty-state">Nenhum resultado disponível.</div></div></article><article class="panel chart-panel"><div class="panel-heading"><h3>Testes no período</h3><span class="unit">Mb/s</span></div><div class="legend"><span class="series download">● Download</span><span class="series upload">● Upload</span></div><div id="speed-chart" class="chart-placeholder">Carregando medições…</div><p class="footnote">Cada par de barras representa um teste. Falhas ficam sem velocidade; não há interpolação entre medições.</p></article></div>
+      <div class="panel table-panel"><div class="panel-heading"><h3>Histórico de testes</h3><span id="speed-count" class="unit"></span></div><div id="speed-table"></div><button id="more-speedtests" class="secondary-button" hidden>Carregar mais testes</button></div>
+    </section>
+    <section id="dns" class="section">
+      <div class="section-heading"><div><h2>Resolução DNS</h2><p>Estado recente e resultados do período, por resolver</p></div></div><div id="dns-cards" class="dns-grid"><div class="panel empty-state">Carregando consultas DNS…</div></div>
+    </section>
+    <section id="events" class="section">
+      <div class="section-heading"><div><h2>Eventos e qualidade da coleta</h2><p>Incidentes confirmados e intervalos sem observação</p></div><span id="incident-count" class="tag neutral">—</span></div>
+      <div id="coverage-note" class="notice" hidden></div>
+      <div class="panel table-panel"><div class="panel-heading"><h3>Incidentes</h3><span class="unit">Por escopo</span></div><div id="incident-table"></div><button id="more-incidents" class="secondary-button" hidden>Carregar mais incidentes</button></div>
+      <details class="panel gaps-panel"><summary>Lacunas e atrasos de coleta <span id="gap-count" class="tag neutral">—</span></summary><p>Ausência de observação e erros operacionais não contam como perda de pacotes. Um registro de atraso pode existir mesmo sem uma rodada perdida.</p><div id="gap-table"></div><button id="more-gaps" class="secondary-button" hidden>Carregar mais registros</button></details>
+      <div class="maintenance-note"><span aria-hidden="true">◷</span><div><strong>Rotina informada: reboot do roteador às 03h</strong><p>A duração da manutenção ainda não foi definida. Os eventos e métricas incluem todas as observações, sem desconto automático.</p></div></div>
+    </section>
+    <footer><span>netmonitor <span class="footer-dot">·</span> Monitoramento contínuo</span><span id="timezone-label">Horários em America/Sao_Paulo · armazenamento UTC</span></footer>
+  </main>
+</body>
+</html>
